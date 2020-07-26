@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "95578996397",
+    "firebase_url": "https://teskopsan.firebaseio.com",
+    "project_id": "teskopsan",
+    "storage_bucket": "teskopsan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:95578996397:android:05ffb0abbaaa207b675024",
+        "android_client_info": {
+          "package_name": "com.inc.vr.corp.app.kopsan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "95578996397-qqfbbm5gajr70tc99gseb0ibomlhgm43.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyrwu-EnHQm9ZL3zLakNlpAabTnMJNwxI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "95578996397-qqfbbm5gajr70tc99gseb0ibomlhgm43.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
