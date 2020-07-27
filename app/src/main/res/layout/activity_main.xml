@@ -17,52 +17,196 @@
               <LinearLayout
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:orientation="vertical">
+                  android:orientation="vertical"
+                  android:paddingBottom="@dimen/_100sdp">
                   <LinearLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:layout_centerVertical="true"
                       android:layout_centerHorizontal="true"
                       android:orientation="vertical">
-                      <View
+                      <LinearLayout
                           android:id="@+id/result"
                           android:layout_width="match_parent"
-                          android:layout_height="@dimen/_280sdp"
+                          android:layout_height="@dimen/_250sdp"
                           android:background="@color/blue_400"
-                          android:visibility="gone"/>
+                          android:visibility="visible"
+                          android:orientation="vertical"
+                          android:padding="@dimen/_12sdp"
+                          android:layout_gravity="center"
+                          android:gravity="center">
+                          <ImageView
+                              android:layout_width="@dimen/_90sdp"
+                              android:layout_height="@dimen/_90sdp"
+                              android:background="@color/red_400"/>
+                          <com.google.android.material.card.MaterialCardView
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              app:cardBackgroundColor="@color/white"
+                              app:cardUseCompatPadding="true"
+                              app:cardMaxElevation="@dimen/_4sdp"
+                              app:cardElevation="@dimen/_3sdp"
+                              app:cardCornerRadius="@dimen/_12sdp">
+                              <LinearLayout
+                                  android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:padding="@dimen/_6sdp"
+                                  android:layout_gravity="center"
+                                  android:gravity="center">
+                                  <TextView
+                                      android:id="@+id/txtNama"
+                                      android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:textStyle="bold"
+                                      android:textSize="@dimen/_14sdp"
+                                      android:text="Ahmad Zunaidi"/>
+                              </LinearLayout>
+                          </com.google.android.material.card.MaterialCardView>
+                      </LinearLayout>
                       <com.journeyapps.barcodescanner.CompoundBarcodeView
                           android:id="@+id/barcode_scanner"
                           android:layout_width="match_parent"
+                          android:visibility="gone"
                           android:layout_height="@dimen/_280sdp"/>
-                      <TextView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="Name" />
-                      <TextView
-                          android:id="@+id/textViewNama"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="nama disini"
-                          android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-                      <TextView
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="Tinggi" />
-                      <TextView
-                          android:id="@+id/textViewTinggi"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:text="tinggi disini"
-                          android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
                   </LinearLayout>
-                  <Button
-                      android:id="@+id/buttonScan"
+                  <LinearLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content"
-                      android:layout_alignParentBottom="true"
-                      android:text="Scan QR Code" />
+                      android:orientation="vertical"
+                      android:padding="@dimen/_12sdp"
+                      android:layout_marginTop="@dimen/_12sdp">
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textSize="@dimen/_12sdp"
+                          android:text="Masukkan Nominal"
+                          android:textColor="@color/colorPrimaryAmm"/>
+                      <com.google.android.material.textfield.TextInputLayout
+                          android:id="@+id/nominal_input_layout"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          app:boxStrokeColor="@color/colorPrimaryAmm"
+                          android:textColorHint="@color/colorPrimaryAmm"
+                          style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                          <com.google.android.material.textfield.TextInputEditText
+                              android:id="@+id/nominal_input"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:inputType="number"
+                              android:textCursorDrawable="@drawable/color_cursor"
+                              android:textColorLink="@color/colorPrimaryAmm"
+                              android:textSize="@dimen/_20sdp"
+                              android:maxLines="1"
+                              android:textAlignment="center"
+                              android:layout_gravity="center_horizontal"
+                              android:gravity="center_horizontal"
+                              android:hint="_ _ _ _ _ _ _ _ _ _"/>
+                      </com.google.android.material.textfield.TextInputLayout>
+                      <com.google.android.material.button.MaterialButton
+                          android:id="@+id/btnbayar"
+                          android:layout_marginTop="@dimen/_12sdp"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:text="Bayar Sekarang"
+                          android:textColor="@color/white"
+                          android:textStyle="bold"
+                          android:background="@color/colorPrimaryAmm"/>
+                  </LinearLayout>
               </LinearLayout>
           </androidx.core.widget.NestedScrollView>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"
+          android:layout_alignParentBottom="true"
+          android:paddingRight="@dimen/_12sdp"
+          android:paddingLeft="@dimen/_12sdp"
+          android:paddingBottom="@dimen/_12sdp"
+          android:paddingTop="@dimen/_12sdp"
+          android:background="@color/white">
+          <com.google.android.material.button.MaterialButton
+              android:id="@+id/buttonScan"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:text="Scan Ulang"
+              android:textStyle="bold"
+              android:background="@color/yellow_400"/>
+      </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:id="@+id/bg_fade"
+          android:background="@color/black"
+          android:orientation="vertical"
+          android:alpha="0.6"/>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:padding="@dimen/_12sdp"
+          android:gravity="center"
+          android:id="@+id/lyKonfirm">
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              app:cardCornerRadius="@dimen/_6sdp"
+              app:cardElevation="@dimen/_4sdp"
+              app:cardMaxElevation="@dimen/_5sdp"
+              app:cardUseCompatPadding="true"
+              android:padding="@dimen/_12sdp">
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="@dimen/_12sdp">
+                  <TextView
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/_12sdp"
+                      android:text="Masukkan Password"
+                      android:textColor="@color/colorPrimaryAmm"/>
+                  <com.google.android.material.textfield.TextInputLayout
+                      android:id="@+id/password_input_layout"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      app:boxStrokeColor="@color/colorPrimaryAmm"
+                      android:textColorHint="@color/colorPrimaryAmm"
+                      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                      <com.google.android.material.textfield.TextInputEditText
+                          android:id="@+id/password_input"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:inputType="number"
+                          android:textCursorDrawable="@drawable/color_cursor"
+                          android:textColorLink="@color/colorPrimaryAmm"
+                          android:textSize="@dimen/_20sdp"
+                          android:maxLines="1"
+                          android:textAlignment="center"
+                          android:layout_gravity="center_horizontal"
+                          android:gravity="center_horizontal"
+                          android:hint="_ _ _ _ _ _ _ _ _ _"/>
+                  </com.google.android.material.textfield.TextInputLayout>
+                  <com.google.android.material.button.MaterialButton
+                      android:id="@+id/btnkonfirm"
+                      android:layout_marginTop="@dimen/_12sdp"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:text="Konfirmasi"
+                      android:textColor="@color/white"
+                      android:textStyle="bold"
+                      android:background="@color/colorPrimaryAmm"/>
+                  <TextView
+                      android:layout_marginTop="@dimen/_12sdp"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:textSize="@dimen/_12sdp"
+                      android:text="X Tutup"
+                      android:textStyle="italic"
+                      android:textColor="@color/red_400"/>
+              </LinearLayout>
+          </androidx.cardview.widget.CardView>
       </LinearLayout>
   </RelativeLayout>
 

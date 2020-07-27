@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,13 +25,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     // View Object
-    private Button buttonScan;
-    private TextView textViewNama, textViewTinggi;
-
+    private Button btnScan, btnBayar, btnKonfirm;
+    private TextView textViewNama, txtClose;
+    EditText nominal, password;
     //qr code scanner object
     private IntentIntegrator intentIntegrator;
     private CompoundBarcodeView barcodeView;
-    View hasil;
+    LinearLayout hasil, bgFade, lyKonfirm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +39,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // initialize object
         hasil = findViewById(R.id.result);
-        buttonScan = (Button) findViewById(R.id.buttonScan);
-        textViewNama = (TextView) findViewById(R.id.textViewNama);
-        textViewTinggi = (TextView) findViewById(R.id.textViewTinggi);
+        btnScan = (Button) findViewById(R.id.buttonScan);
+        btnBayar = findViewById(R.id.btnbayar);
+        btnKonfirm = findViewById(R.id.btnkonfirm);
+        textViewNama = (TextView) findViewById(R.id.txtNama);
+        nominal = findViewById(R.id.nominal_input);
+        password = findViewById(R.id.password_input);
+        bgFade = findViewById(R.id.bg_fade);
+        lyKonfirm = findViewById(R.id.lyKonfirm);
         barcodeView = (CompoundBarcodeView) findViewById(R.id.barcode_scanner);
         barcodeView.decodeContinuous(callback);
         // attaching onclickListener
         //buttonScan.setOnClickListener(this);
+        btnBayar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bgFade.setVisibility(View.VISIBLE);
+                lyKonfirm.setVisibility(View.VISIBLE);
+            }
+        });
+        btnKonfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //CEK Password jika sama
+                //langsung insert transaksi
+                //get transaksi kode
+                boolean sukses=false;
+                if(sukses){
+                    // kirim transaksi kode ke aktiviti berikutnya
+                    String idTrans = "";
+                    Intent intent = new Intent(MainActivity.this, TransaksiResult.class);
+                    intent.putExtra("idTrans", idTrans);
+                    startActivity(intent);
+                }else{
+
+                }
+            }
+        });
     }
     @Override
     public void onResume() {
@@ -70,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         JSONObject object = new JSONObject(result.getText());
                         // atur nilai ke textviews
                         textViewNama.setText(object.getString("nama"));
-                        textViewTinggi.setText(object.getString("tinggi"));
                         barcodeView.setVisibility(View.GONE);
                         hasil.setVisibility(View.VISIBLE);
                     }catch (JSONException e){
@@ -90,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     };
     // Mendapatkan hasil scan
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -105,7 +134,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     JSONObject object = new JSONObject(result.getContents());
                     // atur nilai ke textviews
                     textViewNama.setText(object.getString("nama"));
-                    textViewTinggi.setText(object.getString("tinggi"));
                 }catch (JSONException e){
                     e.printStackTrace();
                     // jika format encoded tidak sesuai maka hasil
