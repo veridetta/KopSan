@@ -39,8 +39,6 @@ public class Launch extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
         sharedpreferences = getSharedPreferences("kopsan", Context.MODE_PRIVATE);
         no_anggota = sharedpreferences.getString("no_anggota", "0");
         kode_login = sharedpreferences.getString("kode_login",null);

@@ -19,9 +19,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TransaksiResult"></activity>
-        <activity android:name=".TokoActivity" />
+        <activity android:name=".MenuActivity"></activity>
         <activity android:name=".MainActivity" />
+        <activity android:name=".ScanResultActivity" />
+        <activity android:name=".TransaksiResult" />
+        <activity android:name=".TokoActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Launch">
             <intent-filter>
