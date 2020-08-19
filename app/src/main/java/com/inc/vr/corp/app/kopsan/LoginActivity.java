@@ -7,9 +7,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.textfield.TextInputEditText;
+import com.inc.vr.corp.app.kopsan.DB.koneksi;
 import com.inc.vr.corp.app.kopsan.app.AppController;
 import com.inc.vr.corp.app.kopsan.server.LokUrl;
 
@@ -30,6 +33,11 @@ import com.inc.vr.corp.app.kopsan.server.LokUrl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,23 +51,24 @@ public class LoginActivity extends AppCompatActivity {
     ConnectivityManager conMgr;
     private static final String TAG = LoginActivity.class.getSimpleName();
     SharedPreferences sharedpreferences;
-    Boolean session = false;
-    String string_email, string_id, no_token,db;
+    Boolean session = false, login=false;
+    String string_email, string_id, no_token,db, nama, noid, no_rek, pedagang_code;
     boolean doubleBackToExitPressedOnce = false;
+    koneksi koneksiClass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
         btn_login = findViewById(R.id.btn_login);
         edit_email = findViewById(R.id.email_input);
         edit_password = findViewById(R.id.password_input);
         appversion = findViewById(R.id.appversion);
-
+        koneksiClass = new koneksi();
         Bundle cek_data = getIntent().getExtras();
         String version = "1.0";
-
+        pDialog = new ProgressDialog(LoginActivity.this);
+        pDialog.setCancelable(false);
+        pDialog.setMessage("Memeriksa data");
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             version = packageInfo.versionName;
@@ -67,15 +76,6 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         appversion.setText("App Version " + version);
-
-        String cek_login = cek_data.getString("CEK_LOGIN");
-        if(cek_login.equals("baru")){
-            Intent belumLogin = new Intent(LoginActivity.this, Launch.class);
-            Toast.makeText(LoginActivity.this, "Harap Login Dahulu!",
-                    Toast.LENGTH_LONG).show();
-            startActivity(belumLogin);
-        }
-
 
         //---------- CEK KONEKSI ------------
         conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -92,15 +92,15 @@ public class LoginActivity extends AppCompatActivity {
         //-------------------------------------
         //-------Cek session login jika TRUE
         // maka langsung buka MainActivity --------------------
-        sharedpreferences = getSharedPreferences("siskopsya", Context.MODE_PRIVATE);
+        sharedpreferences = getSharedPreferences("kopsan", Context.MODE_PRIVATE);
         session = sharedpreferences.getBoolean("session_status", false);
-        string_id = sharedpreferences.getString("id", null);
-        string_email = sharedpreferences.getString("username", null);
-        no_token= sharedpreferences.getString("token", null);
+        nama = sharedpreferences.getString("nama", null);
+        noid = sharedpreferences.getString("noid", null);
+        no_rek= sharedpreferences.getString("no_rek", null);
         if (session) {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            intent.putExtra("id", string_id);
-            intent.putExtra("username", string_email);
+            intent.putExtra("noid", string_id);
+            intent.putExtra("nama", string_email);
             finish();
             startActivity(intent);
         }
@@ -114,7 +114,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (conMgr.getActiveNetworkInfo() != null
                             && conMgr.getActiveNetworkInfo().isAvailable()
                             && conMgr.getActiveNetworkInfo().isConnected()) {
-                        checkLogin(edit_email.getText().toString(), edit_password.getText().toString());
+                        cekLogin fillList = new cekLogin();
+                        fillList.execute("");
                     } else {
                         Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_LONG).show();
                     }
@@ -127,84 +128,74 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
     // ------ FUNCTION CEK LOGIN ---------------
-    private void checkLogin(final String email, final String password) {
-        pDialog = new ProgressDialog(LoginActivity.this);
-        pDialog.setCancelable(false);
-        pDialog.setMessage("Logging in ...");
-        pDialog.show();
-        Log.e(TAG, "Login Response: "+url);
-        StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Log.e(TAG, "Login Response string: " + response.toString());
-                pDialog.dismiss();
-                try {
-                    JSONObject jObj = new JSONObject(response);
-                    success = jObj.getInt("success");
-                    String no_anggota = jObj.getString("no_anggota");
-                    String no_anggota2 = jObj.getString("no_anggota2");
-                    String nama_lengkap = jObj.getString("nama_lengkap");
-                    String alamat = jObj.getString("alamat");
-                    String kode_login =jObj.getString("kode_login");
-                    String db =jObj.getString("db");
+    public class cekLogin extends AsyncTask<String, String, String> {
+        String z = "";
+        @Override
+        protected void onPreExecute() {
+            pDialog.show();
+        }
 
-                    // Check for error node in json
-                    if (success == 1) {
-                        Log.e("Successfully Login!", jObj.toString());
-                        // menyimpan login ke session
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        editor.putBoolean("session_status", true);
-                        editor.putString("no_anggota", no_anggota);
-                        editor.putString("no_anggota2", no_anggota2);
-                        editor.putString("nama_lengkap", nama_lengkap);
-                        editor.putString("alamat", alamat);
-                        editor.putString("kode_login", kode_login);
-                        editor.putString("db", "yayasan5_"+db);
-                        editor.commit();
-                        Toast.makeText(getApplicationContext(),
-                                "Selamat datang ", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        finish();
-                        startActivity(intent);
-
-                    } else {
-                        Toast.makeText(getApplicationContext(),
-                                jObj.getString("message"), Toast.LENGTH_LONG).show();
-
+        @Override
+        protected void onPostExecute(String r) {
+            pDialog.hide();
+            if(login){
+                SharedPreferences.Editor editor = getSharedPreferences("kopsan", MODE_PRIVATE).edit();
+                editor.putString("nama", nama);
+                editor.putString("noid", noid);
+                editor.putString("no_rek", no_rek);
+                editor.putString("pedagang_code", pedagang_code);
+                editor.putBoolean("session_status", true);
+                editor.apply();
+                startActivity(new Intent(LoginActivity.this, MenuActivity.class));
+            }else{
+                Toast.makeText(getApplicationContext(),"Silahkan Coba Lagi",Toast.LENGTH_LONG).show();
+            }
+            //Toast.makeText(ScanResultActivity.this, z, Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                Connection con = koneksiClass.CONN();
+                if (con == null) {
+                    z = "Error in connection with SQL server";
+                } else {
+                    DatabaseMetaData dbm = con.getMetaData();
+                    // check if "employee" table is there
+                    ResultSet tables = dbm.getTables(null, null, "nasabah_table", null);
+                    if (tables.next()) {
+                        // Table exists
+                        Log.d(TAG, "doInBackground: "+"table ada");
                     }
-                } catch (JSONException e) {
-                    // JSON error
-                    Log.wtf(TAG, e.toString());
-                    e.printStackTrace();
+                    else {
+                        // Table does not exist
+                        Log.d(TAG, "doInBackground: "+"table ga ada");
+                    }
+                    String query = "select u.no_anggota, u.pwd, u.noid, ms_pedagang.noid, ms_pedagang.no_rek, ms_pedagang.pedagang_code,nasabah_table.noid," +
+                            "nasabah_table.nama_lengkap from tbl_users u inner join ms_pedagang " +
+                            "on ms_pedagang.noid=u.noid inner join nasabah_table on nasabah_table.noid=ms_pedagang.noid" +
+                            " where " +
+                            "u.pwd='225022234'";
+                    Log.d(TAG, "doInBackground: "+edit_password.getText().toString()+" "+edit_email.getText().toString());
+                    PreparedStatement ps = con.prepareStatement(query);
+                    ResultSet rs = ps.executeQuery();
+                    while (rs.next()) {
+                        if(rs.wasNull()){
+                            login=false;
+                        }else{
+                            login=true;
+                            nama=rs.getString("nama_lengkap");
+                            noid=rs.getString("noid");
+                            no_rek=rs.getString("no_rek");
+                            pedagang_code=rs.getString("pedagang_code");
+                        }
+                    }
+                    Log.d(TAG, "doInBackground: "+rs.getCursorName());
                 }
-
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(),
-                        error.getMessage(), Toast.LENGTH_LONG).show();
-                pDialog.dismiss();
-
-            }
-        }) {
-
-            @Override
-            protected Map<String, String> getParams() {
-                // Posting parameters to login url
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("email", email);
-                params.put("password", password);
-                params.put("no_token", no_token);
-                return params;
-            }
-
-        };
-
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(strReq, "json_obj_req");
+            return z;
+        }
     }
     /// -----------------
     public void onBackPressed() {

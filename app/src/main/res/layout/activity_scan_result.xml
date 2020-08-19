@@ -33,12 +33,16 @@
                             android:padding="@dimen/_12sdp"
                             android:layout_gravity="center"
                             android:gravity="center">
-                            <ImageView
-                                android:layout_width="@dimen/_90sdp"
-                                android:layout_height="@dimen/_90sdp"
-                                android:background="@color/red_400"/>
+                            <TextView
+                                android:id="@+id/txtNama"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_20sdp"
+                                android:text=""/>
                             <com.google.android.material.card.MaterialCardView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
+                                android:minWidth="@dimen/_120sdp"
                                 android:layout_height="wrap_content"
                                 app:cardBackgroundColor="@color/white"
                                 app:cardUseCompatPadding="true"
@@ -46,20 +50,31 @@
                                 app:cardElevation="@dimen/_3sdp"
                                 app:cardCornerRadius="@dimen/_12sdp">
                                 <LinearLayout
-                                    android:layout_width="match_parent"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:padding="@dimen/_6sdp"
                                     android:layout_gravity="center"
                                     android:gravity="center">
                                     <TextView
-                                        android:id="@+id/txtNama"
+                                        android:id="@+id/kelas"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:textStyle="bold"
                                         android:textSize="@dimen/_14sdp"
-                                        android:text="Ahmad Zunaidi"/>
+                                        android:text=""/>
                                 </LinearLayout>
                             </com.google.android.material.card.MaterialCardView>
+                            <TextView
+                                android:id="@+id/alamat"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:textAlignment="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:minLines="1"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_14sdp"
+                                android:text=""/>
                         </LinearLayout>
                         <LinearLayout
 
@@ -162,7 +177,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_12sdp"
-                        android:text="Masukkan Password"
+                        android:text="Masukkan PIN"
                         android:textColor="@color/colorPrimaryAmm"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/password_input_layout"
@@ -175,7 +190,7 @@
                             android:id="@+id/password_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="number"
+                            android:inputType="numberPassword"
                             android:textCursorDrawable="@drawable/color_cursor"
                             android:textColorLink="@color/colorPrimaryAmm"
                             android:textSize="@dimen/_20sdp"

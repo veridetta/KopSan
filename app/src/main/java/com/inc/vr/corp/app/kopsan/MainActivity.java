@@ -63,9 +63,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
             }else{
                 // jika qrcode berisi data
-                Intent intent = new Intent(MainActivity.this, ScanResultActivity.class);
-                intent.putExtra("idSiswa",result.getText());
-                startActivity(intent);
+                Intent tipeinten = getIntent();
+                String tipe = tipeinten.getStringExtra("tipe");
+                if(tipe.equals("saldo")){
+                    Intent intent = new Intent(MainActivity.this, SaldoActivity.class);
+                    intent.putExtra("idSiswa",result.getText());
+                    startActivity(intent);
+                }else{
+                    Intent intent = new Intent(MainActivity.this, ScanResultActivity.class);
+                    intent.putExtra("idSiswa",result.getText());
+                    startActivity(intent);
+                }
+
 
             }
         }

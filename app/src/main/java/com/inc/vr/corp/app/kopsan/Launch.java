@@ -33,43 +33,54 @@ public class Launch extends AppCompatActivity {
     ProgressDialog pDialog;
     final Handler handler = new Handler();
     SharedPreferences sharedpreferences;
-    String kode_login, no_anggota, kode_login_update, no_token, db;
+    String no_id, no_rek, kode_login_update, no_token, db, kode_login, no_anggota;
     Boolean session=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launch);
         sharedpreferences = getSharedPreferences("kopsan", Context.MODE_PRIVATE);
-        no_anggota = sharedpreferences.getString("no_anggota", "0");
-        kode_login = sharedpreferences.getString("kode_login",null);
+        no_rek = sharedpreferences.getString("no_rek", "0");
+        no_id = sharedpreferences.getString("no_id",null);
 
         session = sharedpreferences.getBoolean("session_status", false);
         pDialog = new ProgressDialog(Launch.this);
         pDialog.setCancelable(false);
         pDialog.setMessage("Memvalidasi data, mungkin membutuhkan waktu yang sedikit lebih lama.");
-        //pDialog.show();
-        Intent sudahLogin = new Intent(Launch.this, MainActivity.class);
-        //intent.putExtra(EXTRA_MESSAGE, message);
-        Toast.makeText(Launch.this, "Selamat Datang Kembali",
-                Toast.LENGTH_LONG).show();
-        startActivity(sudahLogin);
-        final ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
+        pDialog.show();
+
+        if(session){
+            Intent sudahLogin = new Intent(Launch.this, MenuActivity.class);
+            //intent.putExtra(EXTRA_MESSAGE, message);
+            Toast.makeText(Launch.this, "Selamat Datang Kembali",
+                    Toast.LENGTH_LONG).show();
+            pDialog.hide();
+            startActivity(sudahLogin);
+        }else{
+            Intent sudahLogin = new Intent(Launch.this, LoginActivity.class);
+            sudahLogin.putExtra("CEK_LOGIN", "baru");
+            Toast.makeText(Launch.this, "Silahkan Login",
+                    Toast.LENGTH_LONG).show();
+            pDialog.hide();
+            startActivity(sudahLogin);
+        }
+        //final ScheduledExecutorService scheduleTaskExecutor = Executors.newScheduledThreadPool(5);
         /*
         // This schedule a runnable task every 2 minutes
         scheduleTaskExecutor.scheduleAtFixedRate(new Runnable() {
             public void run() {
                 no_token = sharedpreferences.getString("token","baru");
                 if(no_token.equals("baru")){
-                    //Intent belumLogin = new Intent(Launch.this, LoginActivity.class);
-                    //belumLogin.putExtra("CEK_LOGIN", "baru");
-                    //startActivity(belumLogin);
+                    Intent belumLogin = new Intent(Launch.this, LoginActivity.class);
+                    belumLogin.putExtra("CEK_LOGIN", "baru");
+                    startActivity(belumLogin);
                 }else{
                     scheduleTaskExecutor.shutdown();
-                    //cekdata();
+                    cekdata();
                 }
             }
         }, 0, 2, TimeUnit.SECONDS);
-         */
+        */
     }
     private void cekdata(){
         final String urll ="https://yayasansehatmadanielarbah.com/api-siskopsya/cek_login.php?auth=c2lza29wc3lhOnNpc2tvcHN5YTEyMw==&&no_anggota="+no_anggota+"&&no_token="+no_token;

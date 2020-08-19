@@ -28,8 +28,9 @@
                         android:layout_width="@dimen/_90sdp"
                         android:layout_height="@dimen/_90sdp"
                         android:id="@+id/img_toko"
-                        android:background="@color/red_400"/>
+                        android:background="@drawable/store"/>
                     <TextView
+                        android:id="@+id/nama_toko"
                         android:layout_marginTop="@dimen/_12sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -53,15 +54,51 @@
                         android:textStyle="bold"
                         />
                     <TextView
+                        android:id="@+id/saldo"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Rp.180.000,00"
+                        android:text="0000"
                         android:textSize="@dimen/_25sdp"
                         android:textStyle="bold"
                         />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true"
+            android:paddingRight="@dimen/_12sdp"
+            android:paddingLeft="@dimen/_12sdp"
+            android:paddingBottom="@dimen/_12sdp"
+            android:paddingTop="@dimen/_12sdp"
+            android:background="@color/white">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnutama"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Menu Utama"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/green_400"/>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnlogout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Keluar"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:backgroundTint="@color/red_400"/>
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/bg_fade"
+            android:background="@color/black"
+            android:orientation="vertical"
+            android:alpha="0.6"/>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

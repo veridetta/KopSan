@@ -50,7 +50,7 @@
 
                 <TextView
                     android:gravity="center"
-                    android:text="KOPERASI SANRTRI"
+                    android:text="KOPERASI SANTRI"
                     android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"
                     app:fontFamily="@font/roboto"
