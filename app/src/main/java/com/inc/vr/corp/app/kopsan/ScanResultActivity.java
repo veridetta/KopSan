@@ -306,8 +306,8 @@ public class ScanResultActivity extends AppCompatActivity {
                                                 saldoCukup=true;
                                             }
                                         }
-                                        a++;
                                     }
+                                    a++;
                                 }
                             }
                         }

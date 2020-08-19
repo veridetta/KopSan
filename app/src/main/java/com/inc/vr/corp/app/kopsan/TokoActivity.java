@@ -122,9 +122,10 @@ public class TokoActivity extends AppCompatActivity {
                         // Table does not exist
                         Log.d("TAG", "doInBackground: "+"table ga ada");
                     }
-                    String qsaldo = "select saldo from tbl_tabungan where no_rek='"+sharedPreferences.getString("no_rek","Kopsan")+"' order by no_urut desc";
+                    String qsaldo = "select * from tbl_tabungan where no_rek='"+sharedPreferences.getString("no_rek","Kopsan").trim()+"' order by id desc";
                     PreparedStatement psaldo = con.prepareStatement(qsaldo);
                     ResultSet rsaldo = psaldo.executeQuery();
+                    Log.d("TAG", "doInBackground: "+qsaldo);
                     Integer a=0;
                     while (rsaldo.next()) {
                         if(rsaldo.wasNull()){
@@ -133,8 +134,9 @@ public class TokoActivity extends AppCompatActivity {
                             if(a<1){
                                 saldo=rsaldo.getString("saldo");
                             }
-                            a++;
+
                         }
+                        a++;
                     }
                 }
             } catch (SQLException e) {
