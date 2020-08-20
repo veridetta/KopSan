@@ -46,6 +46,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import static android.icu.text.RelativeDateTimeFormatter.AbsoluteUnit.NOW;
+
 public class ScanResultActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
@@ -82,8 +84,8 @@ public class ScanResultActivity extends AppCompatActivity {
         txtClose = findViewById(R.id.tutup);
         //baca kiriman
         Intent kiriman = getIntent();
-        //idSiswa = kiriman.getStringExtra("idSiswa");
-        idSiswa="0113-08-2249";
+        idSiswa = kiriman.getStringExtra("idSiswa");
+        //idSiswa="0113-08-2249";
         //textViewNama.setText(idSiswa);
         sharedPreferences = getSharedPreferences("kopsan", Context.MODE_PRIVATE);
         tnama = sharedPreferences.getString("nama", null);
@@ -296,18 +298,18 @@ public class ScanResultActivity extends AppCompatActivity {
                                 while (rsaldo.next()) {
                                     if(rsaldo.wasNull()){
                                         saldo="0";
-                                    }else{
-                                        if(a<1){
-                                            double sal= Double.parseDouble(rsaldo.getString("saldo"));
-                                            int sald= (int) sal;
-                                            if(sald<nominal.getNumericValue()){
-                                                saldoCukup=false;
-                                            }else{
-                                                saldoCukup=true;
+                                    }else {
+                                        if (a < 1) {
+                                            double sal = Double.parseDouble(rsaldo.getString("saldo"));
+                                            int sald = (int) sal;
+                                            if (sald < nominal.getNumericValue()) {
+                                                saldoCukup = false;
+                                            } else {
+                                                saldoCukup = true;
                                             }
                                         }
+                                        a++;
                                     }
-                                    a++;
                                 }
                             }
                         }
@@ -359,7 +361,7 @@ public class ScanResultActivity extends AppCompatActivity {
                         Log.d(TAG, "doInBackground: "+"table ga ada");
                     }
 
-                    String tgl = new SimpleDateFormat("yy/mm/dd", Locale.ENGLISH)
+                    String tgl = new SimpleDateFormat("yymmdd", Locale.ENGLISH)
                             .format(Calendar.getInstance().getTime());
                     String tglkap = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SSS", Locale.ENGLISH)
                             .format(Calendar.getInstance().getTime());
@@ -370,8 +372,10 @@ public class ScanResultActivity extends AppCompatActivity {
                     while (rcek.next()) {
                         if(rcek.wasNull()){
                             no_trans="PJL-"+tgl+0001;
+                            Log.d(TAG, "doInBackground: total kosong"+rcek.toString());
                         }else{
                             int totale =rcek.getInt("total");
+                            Log.d(TAG, "doInBackground: total"+totale);
                             int c =rcek.getInt("total")+1;
                             if (totale >= 9) {
                                 if(totale<=999){
@@ -380,18 +384,41 @@ public class ScanResultActivity extends AppCompatActivity {
                                         no_trans="PJL-"+tgl+"00"+c;
                                     }
                                 }else{
-                                    no_trans="PJL-"+tgl+"000"+c;
+                                    no_trans="PJL-"+tgl+c;
                                 }
+                            }else{
+                                no_trans="PJL-"+tgl+"000"+c;
                             }
                         }
                     }
-                    String qpass = "insert into tbl_penjualan ( no_trans, pedagang_code, no_anggota," +
+                    String keterangan = "TRX penjualan an. "+nama+" no Rekening "+idSiswa;
+                    java.util.Date utilDate = new java.util.Date();
+                    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                    java.sql.Time sqlTime = new java.sql.Time(utilDate.getTime());
+                    /*String qpass = "insert into tbl_penjualan ( date_trans, waktu_input, no_trans, pedagang_code, no_anggota," +
                             " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
-                            "user_input) values('"+no_trans+"','"+tped_code+"','"+noid+"'" +
-                            ",'"+idSiswa+"','"+tno_rek+"','CASH','NULL','11110','11110.001','"+nominal.getNumericValue()+"'" +
-                            ",'','sa')";
+                            "user_input) values(?,?,'"+no_trans+"','"+tped_code+"','"+noid+"'" +
+                            ",'"+idSiswa+"','"+tno_rek+"','CASH','11110.0001','11110','11110.0001','"+nominal.getNumericValue()+"'" +
+                            ",'"+keterangan+"','sa')";*/
+                    String qpass =  "insert into tbl_penjualan ( date_trans, no_trans, pedagang_code, no_anggota," +
+                            " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
+                            "user_input,waktu_input) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     Log.d(TAG, "doInBackground: "+qpass);
                     PreparedStatement preparedStatement = con.prepareStatement(qpass);
+                    preparedStatement.setDate(1, sqlDate);
+                    preparedStatement.setString(2, no_trans);
+                    preparedStatement.setString(3, tped_code);
+                    preparedStatement.setString(4, noid);
+                    preparedStatement.setString(5, idSiswa);
+                    preparedStatement.setString(6, tno_rek);
+                    preparedStatement.setString(7, "CASH");
+                    preparedStatement.setString(8, "11110.0001");
+                    preparedStatement.setString(9, "11110");
+                    preparedStatement.setString(10, "11110.0001");
+                    preparedStatement.setString(11, String.valueOf(nominal.getNumericValue()));
+                    preparedStatement.setString(12, keterangan);
+                    preparedStatement.setString(13, "sa");
+                    preparedStatement.setDate(14, sqlDate);
                     preparedStatement.executeUpdate();
                     isSuccess = true;
                 }
