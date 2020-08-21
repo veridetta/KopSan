@@ -164,16 +164,21 @@ public class SaldoActivity extends AppCompatActivity {
                     PreparedStatement psaldo = con.prepareStatement(qsaldo);
                     ResultSet rsaldo = psaldo.executeQuery();
                     Integer a=0;
-                    while (rsaldo.next()) {
-                        if(rsaldo.wasNull()){
-                            saldo="0";
-                        }else{
-                            if(a<1){
-                                saldo=rsaldo.getString("saldo");
+                    if(rsaldo.wasNull()){
+                        saldo="0";
+                    }else{
+                        while (rsaldo.next()) {
+                            if(rsaldo.wasNull()){
+                                saldo="0";
+                            }else{
+                                if(a<1){
+                                    saldo=rsaldo.getString("saldo");
+                                }
+                                a++;
                             }
-                            a++;
                         }
                     }
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

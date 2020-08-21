@@ -361,7 +361,7 @@ public class ScanResultActivity extends AppCompatActivity {
                         Log.d(TAG, "doInBackground: "+"table ga ada");
                     }
 
-                    String tgl = new SimpleDateFormat("yymmdd", Locale.ENGLISH)
+                    String tgl = new SimpleDateFormat("ddMMyy", Locale.ENGLISH)
                             .format(Calendar.getInstance().getTime());
                     String tglkap = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss.SSS", Locale.ENGLISH)
                             .format(Calendar.getInstance().getTime());
