@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         }catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        appversion.setText("App Version " + version);
+//        appversion.setText("App Version " + version);
 
         //---------- CEK KONEKSI ------------
         conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
