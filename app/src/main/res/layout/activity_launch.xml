@@ -15,9 +15,9 @@
         android:layout_height="match_parent"
         android:gravity="center">
         <ImageView
-            android:layout_width="@dimen/_290sdp"
-            android:layout_height="@dimen/_160sdp"
-            android:background="@color/blue_400"/>
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="@dimen/_200sdp"
+            android:background="@drawable/simpatitis"/>
     </LinearLayout>
 </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

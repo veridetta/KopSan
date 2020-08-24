@@ -68,10 +68,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(tipe.equals("saldo")){
                     Intent intent = new Intent(MainActivity.this, SaldoActivity.class);
                     intent.putExtra("idSiswa",result.getText());
+                    finish();
                     startActivity(intent);
                 }else{
                     Intent intent = new Intent(MainActivity.this, ScanResultActivity.class);
                     intent.putExtra("idSiswa",result.getText());
+                    finish();
                     startActivity(intent);
                 }
 

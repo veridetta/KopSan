@@ -79,6 +79,7 @@ public class SaldoActivity extends AppCompatActivity {
         btnLain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(SaldoActivity.this, MenuActivity.class));
             }
         });

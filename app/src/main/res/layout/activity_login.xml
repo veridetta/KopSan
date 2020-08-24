@@ -24,10 +24,10 @@
                 android:paddingRight="@dimen/_18sdp"
                 android:orientation="vertical">
                 <ImageView
-                    android:layout_width="@dimen/_80sdp"
-                    android:layout_height="@dimen/_83sdp"
+                    android:layout_width="@dimen/_190sdp"
+                    android:layout_height="@dimen/_190sdp"
                     android:layout_gravity="center"
-                    android:background="@color/red_400"/>
+                    android:background="@drawable/simpatitis"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -38,19 +38,9 @@
                 android:paddingLeft="@dimen/_18sdp"
                 android:paddingRight=   "@dimen/_18sdp"
                 android:orientation="vertical">
-
                 <TextView
                     android:gravity="center"
-                    android:text="Selamat Datang Di"
-                    android:textSize="@dimen/_18sdp"
-                    android:textStyle="bold"
-                    app:fontFamily="@font/roboto"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:gravity="center"
-                    android:text="KOPERASI SANTRI"
+                    android:text="SIMTITIS"
                     android:textSize="@dimen/_16sdp"
                     android:textStyle="bold"
                     app:fontFamily="@font/roboto"
@@ -138,33 +128,6 @@
                         android:text="Login"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12sdp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/_2sdp">
-                    <TextView
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_20sdp"
-                        android:fontFamily="@font/roboto"
-                        android:gravity="center"
-                        android:text="Sistem Informasi Koperasi Syariah."
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_14sdp" />
-                    <TextView
-                        android:id="@+id/appversion"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_20sdp"
-                        android:fontFamily="@font/roboto"
-                        android:gravity="center"
-                        android:text="App version "
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_14sdp" />
-
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

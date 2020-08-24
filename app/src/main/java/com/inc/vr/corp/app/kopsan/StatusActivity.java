@@ -34,12 +34,14 @@ public class StatusActivity extends AppCompatActivity {
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(getApplicationContext(), MenuActivity.class));
             }
         });
         toko.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(getApplicationContext(), TokoActivity.class));
             }
         });

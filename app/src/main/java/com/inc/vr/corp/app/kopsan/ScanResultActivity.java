@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -147,6 +148,7 @@ public class ScanResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ScanResultActivity.this, MainActivity.class);
+                finish();
                 startActivity(intent);
             }
         });
@@ -334,10 +336,12 @@ public class ScanResultActivity extends AppCompatActivity {
             if(isSuccess){
                 Intent intents = new Intent(getApplicationContext(), StatusActivity.class);
                 intents.putExtra("status","sukses");
+                finish();
                 startActivity(intents);
             }else{
                 Intent intents = new Intent(getApplicationContext(), StatusActivity.class);
                 intents.putExtra("status","gagal");
+                finish();
                 startActivity(intents);
             }
         }

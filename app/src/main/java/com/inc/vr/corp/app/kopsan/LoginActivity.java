@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_login = findViewById(R.id.btn_login);
         edit_email = findViewById(R.id.email_input);
         edit_password = findViewById(R.id.password_input);
-        appversion = findViewById(R.id.appversion);
+        //appversion = findViewById(R.id.appversion);
         koneksiClass = new koneksi();
         Bundle cek_data = getIntent().getExtras();
         String version = "1.0";
@@ -146,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 editor.putString("pedagang_code", pedagang_code);
                 editor.putBoolean("session_status", true);
                 editor.apply();
+                finish();
                 startActivity(new Intent(LoginActivity.this, MenuActivity.class));
             }else{
                 Toast.makeText(getApplicationContext(),"Silahkan Coba Lagi",Toast.LENGTH_LONG).show();

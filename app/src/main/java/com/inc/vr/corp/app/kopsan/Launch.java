@@ -55,10 +55,12 @@ public class Launch extends AppCompatActivity {
             Toast.makeText(Launch.this, "Selamat Datang Kembali",
                     Toast.LENGTH_LONG).show();
             pDialog.hide();
+            finish();
             startActivity(sudahLogin);
         }else{
             Intent sudahLogin = new Intent(Launch.this, LoginActivity.class);
             sudahLogin.putExtra("CEK_LOGIN", "baru");
+            finish();
             Toast.makeText(Launch.this, "Silahkan Login",
                     Toast.LENGTH_LONG).show();
             pDialog.hide();
@@ -100,6 +102,7 @@ public class Launch extends AppCompatActivity {
                         Intent belumLogin = new Intent(Launch.this, LoginActivity.class);
                         //intent.putExtra(EXTRA_MESSAGE, message);
                         belumLogin.putExtra("CEK_LOGIN", "tidak");
+                        finish();
                         Toast.makeText(Launch.this, "Harap Login Dahulu!",
                                 Toast.LENGTH_LONG).show();
                         startActivity(belumLogin);
@@ -112,6 +115,7 @@ public class Launch extends AppCompatActivity {
                             if(kode_login.equals(kode_login_update)){
                                 Intent sudahLogin = new Intent(Launch.this, MainActivity.class);
                                 //intent.putExtra(EXTRA_MESSAGE, message);
+                                finish();
                                 Toast.makeText(Launch.this, "Selamat Datang Kembali",
                                         Toast.LENGTH_LONG).show();
                                 startActivity(sudahLogin);
@@ -125,6 +129,7 @@ public class Launch extends AppCompatActivity {
                                 editor.putString("no_anggota", "");
                                 editor.putString("nama_lengkap", "");
                                 editor.putString("kode_login", "");
+                                finish();
                                 startActivity(belumLogin);
                             }
                         }else{
@@ -133,6 +138,7 @@ public class Launch extends AppCompatActivity {
                             belumLogin.putExtra("CEK_LOGIN", "tidak");
                             Toast.makeText(Launch.this, "Harap Login Dahulu!",
                                     Toast.LENGTH_LONG).show();
+                            finish();
                             startActivity(belumLogin);
                         }
                     }

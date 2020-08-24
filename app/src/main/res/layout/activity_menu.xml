@@ -19,31 +19,63 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="vertical">
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/_10sdp"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/nama_toko"
+                    android:padding="@dimen/_12sdp">
+                    <LinearLayout
+                        android:layout_marginTop="@dimen/_22sdp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:minHeight="@dimen/_76sdp"
+                        android:background="@color/blue_400"/>
+                    <LinearLayout
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/_24sdp"
+                        android:layout_marginLeft="@dimen/_2sdp"
+                        android:layout_marginRight="@dimen/_2sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Toko Sejahtera"
-                        android:textColor="@color/blue_400"
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_30sdp"
-                        android:minLines="1"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
-                    <TextView
+                        android:background="@color/white">
+                        <LinearLayout
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/_10sdp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:id="@+id/nama_toko"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/blue_400"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/_30sdp"
+                                android:minLines="1"
+                                android:layout_gravity="center"
+                                android:gravity="center"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Membangun UMKM bersama Kopsan"
-                        android:textColor="@color/grey_700"
-                        android:textSize="@dimen/_14sdp"
-                        android:layout_gravity="center"
-                        android:gravity="center"/>
-                </LinearLayout>
+                        android:layout_marginLeft="@dimen/_15sdp"
+                        android:layout_marginRight="@dimen/_15sdp"
+                        android:padding="@dimen/_8sdp">
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/id_toko"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_13sdp"
+                            android:padding="@dimen/_7sdp"
+                            android:textStyle="bold"
+                            app:backgroundTint="@color/blue_800"/>
+                    </LinearLayout>
+                </RelativeLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

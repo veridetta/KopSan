@@ -33,6 +33,7 @@ public class TokoActivity extends AppCompatActivity {
     Button transaksi, logout;
     LinearLayout bgFade;
     koneksi koneksiClass;
+    boolean isSaldo=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class TokoActivity extends AppCompatActivity {
         transaksi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                finish();
                 startActivity(new Intent(TokoActivity.this, MenuActivity.class));
             }
         });
@@ -62,6 +64,7 @@ public class TokoActivity extends AppCompatActivity {
                 editor.putString("no_rek", "");
                 editor.putBoolean("session_status", false);
                 editor.apply();
+                finish();
                 startActivity(new Intent(TokoActivity.this, LoginActivity.class));
             }
         });
@@ -100,9 +103,12 @@ public class TokoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r) {
             bgFade.setVisibility(View.GONE);
-            txtsaldo.setText(KurensiIndonesia(Double.parseDouble(saldo.split("-")[0])));
+            if(isSaldo){
+                txtsaldo.setText(KurensiIndonesia(Double.parseDouble(saldo.split("-")[0])));
+            }else {
+                txtsaldo.setText(KurensiIndonesia(Double.parseDouble("0")));
+            }
             //Toast.makeText(ScanResultActivity.this, z, Toast.LENGTH_SHORT).show();
-
         }
         @Override
         protected String doInBackground(String... params) {
@@ -126,17 +132,22 @@ public class TokoActivity extends AppCompatActivity {
                     PreparedStatement psaldo = con.prepareStatement(qsaldo);
                     ResultSet rsaldo = psaldo.executeQuery();
                     Log.d("TAG", "doInBackground: "+qsaldo);
-                    Integer a=0;
-                    while (rsaldo.next()) {
-                        if(rsaldo.wasNull()){
-                            saldo="0";
-                        }else{
-                            if(a<1){
-                                saldo=rsaldo.getString("saldo");
-                            }
+                    if(rsaldo.wasNull()){
+                        isSaldo=false;
+                    }else{
+                        Integer a=0;
+                        while (rsaldo.next()) {
+                            if(rsaldo.wasNull()){
+                                saldo="0";
+                            }else{
+                                if(a<1){
+                                    isSaldo=true;
+                                    saldo=rsaldo.getString("saldo");
+                                }
 
+                            }
+                            a++;
                         }
-                        a++;
                     }
                 }
             } catch (SQLException e) {
