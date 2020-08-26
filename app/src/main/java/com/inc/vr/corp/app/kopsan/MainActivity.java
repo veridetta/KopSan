@@ -27,10 +27,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ZXingScannerView.ResultHandler {
     // View Object
-
     //qr code scanner object
     private ZXingScannerView mScannerView;
-
     @Override
     protected void onCreate(Bundle state) {
         super.onCreate(state);
@@ -63,27 +61,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(MainActivity.this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
             }else{
                 // jika qrcode berisi data
-                Intent tipeinten = getIntent();
-                String tipe = tipeinten.getStringExtra("tipe");
-                if(tipe.equals("saldo")){
-                    Intent intent = new Intent(MainActivity.this, SaldoActivity.class);
-                    intent.putExtra("idSiswa",result.getText());
-                    finish();
-                    startActivity(intent);
+                String[] parts = result.getText().split("-");
+                if(parts[0].equals("0113")){
+                    if(result.getText().length()>12){
+                        Toast.makeText(MainActivity.this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Intent tipeinten = getIntent();
+                        String tipe = tipeinten.getStringExtra("tipe");
+                        if(tipe.equals("saldo")){
+                            Intent intent = new Intent(MainActivity.this, SaldoActivity.class);
+                            intent.putExtra("idSiswa",result.getText());
+                            finish();
+                            startActivity(intent);
+                        }else{
+                            Intent intent = new Intent(MainActivity.this, ScanResultActivity.class);
+                            intent.putExtra("idSiswa",result.getText());
+                            finish();
+                            startActivity(intent);
+                        }
+                    }
                 }else{
-                    Intent intent = new Intent(MainActivity.this, ScanResultActivity.class);
-                    intent.putExtra("idSiswa",result.getText());
-                    finish();
-                    startActivity(intent);
+                    Toast.makeText(MainActivity.this, "Hasil tidak ditemukan", Toast.LENGTH_SHORT).show();
                 }
-
-
             }
         }
         // If you would like to resume scanning, call this method below:
         mScannerView.resumeCameraPreview((ZXingScannerView.ResultHandler) this);
     };
-
     @Override
     public void onClick(View view) {
 

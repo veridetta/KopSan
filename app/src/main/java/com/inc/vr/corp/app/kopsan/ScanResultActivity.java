@@ -11,7 +11,6 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,33 +20,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.inc.vr.corp.app.kopsan.DB.koneksi;
-import com.inc.vr.corp.app.kopsan.app.AppController;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Calendar;
-import java.util.Currency;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
-
-import static android.icu.text.RelativeDateTimeFormatter.AbsoluteUnit.NOW;
 
 public class ScanResultActivity extends AppCompatActivity {
 
@@ -60,7 +43,8 @@ public class ScanResultActivity extends AppCompatActivity {
     LinearLayout hasil, bgFade, lyKonfirm;
     koneksi  koneksiClass;
     String z="";
-    boolean saldoCukup=false, isSuccess=false, isPassword=false;
+    String pesan="kosong";
+    boolean saldoCukup=false, isSuccess=false, isPassword=false, maxTrans=false;
     int success;
     private static final String TAG = LoginActivity.class.getSimpleName();
     ProgressDialog pDialog;
@@ -148,6 +132,7 @@ public class ScanResultActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ScanResultActivity.this, MainActivity.class);
+                intent.putExtra("tipe","transaksi");
                 finish();
                 startActivity(intent);
             }
@@ -207,7 +192,7 @@ public class ScanResultActivity extends AppCompatActivity {
                         Log.d(TAG, "doInBackground: "+"table ga ada");
                     }
                     String query = "select t.no_rek, t.noid, n.nama_lengkap, n.noid, n.detail_pekerjaan," +
-                            "n.jalan_gg, n.blok, n.rt, n.rw, n.desa, n.kecamatan from nasabah_tabungan t inner join nasabah_table n on n.noid=t.noid where t.no_rek='"+idSiswa+"'";
+                            "n.jalan_gg, n.blok, n.rt, n.rw, n.desa, n.kecamatan, n.kota_code from nasabah_tabungan t inner join nasabah_table n on n.noid=t.noid where t.no_rek='"+idSiswa+"'";
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
@@ -218,18 +203,29 @@ public class ScanResultActivity extends AppCompatActivity {
                             nama=rs.getString("nama_lengkap");
                             noid=rs.getString("noid");
                             kelas="Kelas "+rs.getString("detail_pekerjaan");
-                            if(rs.getString("jalan_gg")==null){
+                            if(rs.getString("kota_code")==null){
                                 alamat="alamat belum di set";
                             }else{
+                                if(rs.getString("kota_code").equals("KNG")){
+                                    alamat="Kuningan";
+                                }else{
+                                    alamat=rs.getString("kota_code");
+                                }
+                                /*
                                 al=rs.getString("jalan_gg")+" "+rs.getString("blok")+" "+rs.getString("rt")+"/"+rs.getString("rw")+" "+rs.getString("desa")+" "+rs.getString("kecamatan");
                                 if(al.length()>24){
                                     alamat=al;
                                 }else{
                                     alamat="alamat belum di set";
-                                }
+                                }*/
                             }
 
                         }
+                    }
+                    if(rs.wasNull()){
+                        Toast.makeText(ScanResultActivity.this, "Data Tidak ditemukan", Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(new Intent(ScanResultActivity.this, MenuActivity.class));
                     }
                     Log.d(TAG, "doInBackground: "+rs.getCursorName());
                 }
@@ -254,7 +250,12 @@ public class ScanResultActivity extends AppCompatActivity {
             //Toast.makeText(ScanResultActivity.this, z, Toast.LENGTH_SHORT).show();
             if(isPassword){
                 if(saldoCukup){
-                    new transaksi().execute();
+                    if(maxTrans){
+                        Toast.makeText(getApplicationContext(), pesan,Toast.LENGTH_LONG).show();
+                    }else{
+                        new transaksi().execute();
+                        //Toast.makeText(getApplicationContext(),"Saldo belum transaksi "+pesan,Toast.LENGTH_LONG).show();
+                    }
                 }else{
                     Toast.makeText(getApplicationContext(),"Saldo tidak cukup",Toast.LENGTH_LONG).show();
                 }
@@ -307,15 +308,52 @@ public class ScanResultActivity extends AppCompatActivity {
                                             if (sald < nominal.getNumericValue()) {
                                                 saldoCukup = false;
                                             } else {
-                                                saldoCukup = true;
+                                                if(sald>5000){
+                                                    saldoCukup = true;
+                                                }else{
+                                                    saldoCukup =false;
+                                                }
+
                                             }
                                         }
                                         a++;
                                     }
                                 }
+                                if(saldoCukup){
+                                    String tglz = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+                                            .format(Calendar.getInstance().getTime());
+                                    String date_trans=tglz+" 00:00:00.000";
+                                    Log.d(TAG, "doInBackground: "+tglz);
+                                    double amount = 0;
+                                    String max = "select amount, date_trans from tbl_penjualan where norek_asal='"+idSiswa+"' and date_trans='"+date_trans+"'";
+                                    PreparedStatement pmax = con.prepareStatement(max);
+                                    //pmax.setString(1, idSiswa);
+                                    //pmax.setString(2,"2020-08-25 00:00:00.000");
+                                    ResultSet rmax = pmax.executeQuery();
+                                    if(rmax.wasNull()){
+                                        //pesan = "tidak ada transaksi hari ini";
+                                        //Log.d(TAG, "doInBackground: "+"saldo "+pmax+" "+idSiswa);
+                                    }else{
+                                        while(rmax.next()){
+                                            amount += Double.parseDouble(rmax.getString("amount"));
+                                        }
+                                        double trans_today=amount+nominal.getNumericValue();
+                                        double maxval=25000;
+                                        if(trans_today>maxval){
+                                            pesan = "Transaksi Sudah Melampaui Batas Hari ini";
+                                            maxTrans=true;
+                                            Log.d(TAG, "doInBackground: "+"saldo "+trans_today);
+                                        }else{
+                                            maxTrans=false;
+                                            //pesan = "Transaksi Normal "+String.valueOf(amount)+idSiswa;
+                                            Log.d(TAG, "doInBackground: "+"saldo "+trans_today+" "+nominal.getNumericValue());
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
+
                 }
             } catch (SQLException e) {
                 e.printStackTrace();

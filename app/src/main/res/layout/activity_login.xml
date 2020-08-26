@@ -82,7 +82,7 @@
                             android:textCursorDrawable="@drawable/color_cursor"
                             android:textColorLink="@color/colorPrimaryAmm"
                             android:maxLines="1"
-                            android:hint="No Pedangang"/>
+                            android:hint="No Pedagang"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
                 <LinearLayout
