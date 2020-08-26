@@ -38,6 +38,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
+                                android:layout_gravity="center"
+                                android:gravity="center"
                                 android:textSize="@dimen/_20sdp"
                                 android:text=""/>
                             <com.google.android.material.card.MaterialCardView
@@ -178,6 +180,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/_12sdp"
                         android:text="Masukkan PIN"
+                        android:maxLength="6"
                         android:textColor="@color/colorPrimaryAmm"/>
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/password_input_layout"

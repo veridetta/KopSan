@@ -175,7 +175,7 @@ public class LoginActivity extends AppCompatActivity {
                             "nasabah_table.nama_lengkap from tbl_users u inner join ms_pedagang " +
                             "on ms_pedagang.noid=u.noid inner join nasabah_table on nasabah_table.noid=ms_pedagang.noid" +
                             " where " +
-                            "u.pwd='225022234'";
+                            "u.pwd='"+edit_password.getText().toString()+"' and u.noid='"+edit_email.getText().toString()+"'";
                     Log.d(TAG, "doInBackground: "+edit_password.getText().toString()+" "+edit_email.getText().toString());
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();

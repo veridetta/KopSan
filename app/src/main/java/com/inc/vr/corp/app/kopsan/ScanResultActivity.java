@@ -442,7 +442,7 @@ public class ScanResultActivity extends AppCompatActivity {
                             "user_input) values(?,?,'"+no_trans+"','"+tped_code+"','"+noid+"'" +
                             ",'"+idSiswa+"','"+tno_rek+"','CASH','11110.0001','11110','11110.0001','"+nominal.getNumericValue()+"'" +
                             ",'"+keterangan+"','sa')";*/
-                    String qpass =  "insert into tbl_penjualan ( date_trans, no_trans, pedagang_code, no_anggota," +
+                    String qpass =  "insert into tbl_penjualan ( date_trans, no_trans, pedagang_code, noid," +
                             " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
                             "user_input,waktu_input) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                     Log.d(TAG, "doInBackground: "+qpass);

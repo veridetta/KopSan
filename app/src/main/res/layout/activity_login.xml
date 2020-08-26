@@ -82,6 +82,7 @@
                             android:textCursorDrawable="@drawable/color_cursor"
                             android:textColorLink="@color/colorPrimaryAmm"
                             android:maxLines="1"
+                            android:maxLength="8"
                             android:hint="No Pedagang"/>
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
@@ -109,6 +110,7 @@
                             android:textCursorDrawable="@drawable/color_cursor"
                             android:textColorLink="@color/colorPrimaryAmm"
                             android:inputType="textPassword"
+                            android:maxLength="6"
                             />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
