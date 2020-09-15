@@ -48,7 +48,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SaldoActivity extends AppCompatActivity {
-    String saldo, idSiswa, url = "login.php";
+    String saldo="0", idSiswa, url = "login.php";
     int success;
     TextView txtKelas, txtAlamat, textViewNama;
     TextView txtSaldo;
@@ -138,7 +138,7 @@ public class SaldoActivity extends AppCompatActivity {
                         Log.d(TAG, "doInBackground: "+"table ga ada");
                     }
                     String query = "select t.no_rek, t.noid, n.nama_lengkap, n.noid, n.detail_pekerjaan," +
-                            "n.jalan_gg, n.blok, n.rt, n.rw, n.desa, n.kecamatan from nasabah_tabungan t inner join nasabah_table n on n.noid=t.noid where t.no_rek='"+idSiswa+"'";
+                            "n.jalan_gg, n.blok, n.rt, n.rw, n.desa, n.kecamatan, n.kota_code from nasabah_tabungan t inner join nasabah_table n on n.noid=t.noid where t.no_rek='"+idSiswa+"'";
                     PreparedStatement ps = con.prepareStatement(query);
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
@@ -148,15 +148,22 @@ public class SaldoActivity extends AppCompatActivity {
                             String al="";
                             nama=rs.getString("nama_lengkap");
                             kelas="Kelas "+rs.getString("detail_pekerjaan");
-                            if(rs.getString("jalan_gg")==null){
+                            if(rs.getString("kota_code")==null){
                                 alamat="alamat belum di set";
                             }else{
-                                al=rs.getString("jalan_gg")+" "+rs.getString("blok")+" "+rs.getString("rt")+"/"+rs.getString("rw")+" "+rs.getString("desa")+" "+rs.getString("kecamatan");
-                                if(al.length()>24){
-                                    alamat=al;
+                                al=rs.getString("kota_code");
+                                if(al.equals("KNG")){
+                                    al="KUNINGAN";
                                 }else{
-                                    alamat="alamat belum di set";
+                                    al=rs.getString("kota_code");
                                 }
+                                alamat=al;
+                                //al=rs.getString("jalan_gg")+" "+rs.getString("blok")+" "+rs.getString("rt")+"/"+rs.getString("rw")+" "+rs.getString("desa")+" "+rs.getString("kecamatan");
+                                //if(al.length()>24){
+                                  //  alamat=al;
+                                //}else{
+                                  //  alamat="alamat belum di set";
+                                //}
                             }
 
                         }

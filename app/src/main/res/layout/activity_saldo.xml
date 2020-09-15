@@ -39,7 +39,7 @@
                                 android:layout_height="wrap_content"
                                 android:textStyle="bold"
                                 android:textSize="@dimen/_20sdp"
-                                android:text="Ahmad Zunaidi"/>
+                                android:text="Memuat...."/>
                             <com.google.android.material.card.MaterialCardView
                                 android:layout_width="wrap_content"
                                 android:minWidth="@dimen/_120sdp"
@@ -61,7 +61,7 @@
                                         android:layout_height="wrap_content"
                                         android:textStyle="bold"
                                         android:textSize="@dimen/_14sdp"
-                                        android:text="Ahmad Zunaidi"/>
+                                        android:text="memuat.."/>
                                 </LinearLayout>
                             </com.google.android.material.card.MaterialCardView>
                             <TextView
