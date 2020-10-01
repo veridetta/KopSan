@@ -42,7 +42,9 @@ public class ScanResultActivity extends AppCompatActivity {
     CurrencyEditText nominal;
     LinearLayout hasil, bgFade, lyKonfirm;
     koneksi  koneksiClass;
+    int k;
     String z="";
+    int count;
     String pesan="kosong";
     boolean saldoCukup=false, isSuccess=false, isPassword=false, maxTrans=false;
     int success;
@@ -433,36 +435,48 @@ public class ScanResultActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    String keterangan = "TRX penjualan an. "+nama+" no Rekening "+idSiswa;
-                    java.util.Date utilDate = new java.util.Date();
-                    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                    java.sql.Time sqlTime = new java.sql.Time(utilDate.getTime());
+                    if(k<1){
+                        String keterangan = "TRX penjualan an. "+nama+" no Rekening "+idSiswa;
+                        java.util.Date utilDate = new java.util.Date();
+                        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                        java.sql.Time sqlTime = new java.sql.Time(utilDate.getTime());
+                        //-----------Cek sudah input -------------//
                     /*String qpass = "insert into tbl_penjualan ( date_trans, waktu_input, no_trans, pedagang_code, no_anggota," +
                             " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
                             "user_input) values(?,?,'"+no_trans+"','"+tped_code+"','"+noid+"'" +
                             ",'"+idSiswa+"','"+tno_rek+"','CASH','11110.0001','11110','11110.0001','"+nominal.getNumericValue()+"'" +
                             ",'"+keterangan+"','sa')";*/
-                    String qpass =  "insert into tbl_penjualan ( date_trans, no_trans, pedagang_code, noid," +
-                            " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
-                            "user_input,waktu_input) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                    Log.d(TAG, "doInBackground: "+qpass);
-                    PreparedStatement preparedStatement = con.prepareStatement(qpass);
-                    preparedStatement.setDate(1, sqlDate);
-                    preparedStatement.setString(2, no_trans);
-                    preparedStatement.setString(3, tped_code);
-                    preparedStatement.setString(4, noid);
-                    preparedStatement.setString(5, idSiswa);
-                    preparedStatement.setString(6, tno_rek);
-                    preparedStatement.setString(7, "CASH");
-                    preparedStatement.setString(8, "11110.0001");
-                    preparedStatement.setString(9, "11110");
-                    preparedStatement.setString(10, "11110.0001");
-                    preparedStatement.setString(11, String.valueOf(nominal.getNumericValue()));
-                    preparedStatement.setString(12, keterangan);
-                    preparedStatement.setString(13, "sa");
-                    preparedStatement.setDate(14, sqlDate);
-                    preparedStatement.executeUpdate();
-                    isSuccess = true;
+                        String qpass =  "insert into tbl_penjualan ( date_trans, no_trans, pedagang_code, noid," +
+                                " norek_asal, norek_tujuan, type_trans, desc_account, no_account, sub_code, amount, keterangan, " +
+                                "user_input,waktu_input) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                        Log.d(TAG, "doInBackground: "+qpass);
+                        PreparedStatement preparedStatement = con.prepareStatement(qpass);
+                        preparedStatement.setDate(1, sqlDate);
+                        preparedStatement.setString(2, no_trans);
+                        preparedStatement.setString(3, tped_code);
+                        preparedStatement.setString(4, noid);
+                        preparedStatement.setString(5, idSiswa);
+                        preparedStatement.setString(6, tno_rek);
+                        preparedStatement.setString(7, "CASH");
+                        preparedStatement.setString(8, "11110.0001");
+                        preparedStatement.setString(9, "11110");
+                        preparedStatement.setString(10, "11110.0001");
+                        preparedStatement.setString(11, String.valueOf(nominal.getNumericValue()));
+                        preparedStatement.setString(12, keterangan);
+                        preparedStatement.setString(13, "sa");
+                        preparedStatement.setDate(14, sqlDate);
+                        preparedStatement.executeUpdate();
+                        isSuccess=true;
+                        k=4;
+                    }else{
+                        isSuccess=false;
+                    }
+                    //count = preparedStatement.executeUpdate();
+                    if(isSuccess){
+                        k=4;
+                    }else{
+
+                    }
                 }
             } catch (SQLException e) {
                 isSuccess = false;
