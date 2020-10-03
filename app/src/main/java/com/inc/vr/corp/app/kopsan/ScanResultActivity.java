@@ -255,6 +255,7 @@ public class ScanResultActivity extends AppCompatActivity {
                     if(maxTrans){
                         Toast.makeText(getApplicationContext(), pesan,Toast.LENGTH_LONG).show();
                     }else{
+
                         new transaksi().execute();
                         //Toast.makeText(getApplicationContext(),"Saldo belum transaksi "+pesan,Toast.LENGTH_LONG).show();
                     }
@@ -310,7 +311,7 @@ public class ScanResultActivity extends AppCompatActivity {
                                             if (sald < nominal.getNumericValue()) {
                                                 saldoCukup = false;
                                             } else {
-                                                if(sald>5000){
+                                                if((sald-nominal.getNumericValue())>5000){
                                                     saldoCukup = true;
                                                 }else{
                                                     saldoCukup =false;
